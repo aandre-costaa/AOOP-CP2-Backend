@@ -24,12 +24,14 @@ async function startServer() {
 
         // middleware to use connection in every route
         function setCollection(req, res, next) {
-            req.collection = db.collection('movies');
-            //req.collectionComments = db.collection('comments');
+            req.collections = {
+                movies: db.collection('movies'),
+                comments: db.collection('comments')
+            };
             next();
         };
         app.use(setCollection);
-
+        app.use('/', router);
 
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
@@ -46,32 +48,32 @@ await startServer();
 // CRUD endpoints
 
 // Get all movies
-app.get('/movies/', async (req, res) => {
-    try {
-        if (!req.collection) {
-            return res.status(500).send({ error: 'Database collection not initialized' });
-        }
-        const movies = await req.collection.find().toArray();
-        console.log(movies);
-        res.json(movies);
-    } catch (err) {
-        res.status(500).send({ error: 'Failed to fetch movies', details: err.message });
-    }
-});
-
-// Get a movie by ID
-app.get('/movies/:id', async (req, res) => {
-    try {
-        if (!req.collection) {
-            return res.status(500).send({ error: 'Database collection not initialized' });
-        }
-        const movie = await req.collection.findOne({ _id: new ObjectId(req.params.id) });
-        if (movie) {
-            res.json(movie);
-        } else {
-            res.status(404).send({ error: 'Movie not found' });
-        }
-    } catch (err) {
-        res.status(500).send({ error: 'Failed to fetch movie', details: err.message });
-    }
-});
+// app.get('/movies/', async (req, res) => {
+//     try {
+//         if (!req.collection) {
+//             return res.status(500).send({ error: 'Database collection not initialized' });
+//         }
+//         const movies = await req.collection.find().toArray();
+//         console.log(movies);
+//         res.json(movies);
+//     } catch (err) {
+//         res.status(500).send({ error: 'Failed to fetch movies', details: err.message });
+//     }
+// });
+//
+// // Get a movie by ID
+// app.get('/movies/:id', async (req, res) => {
+//     try {
+//         if (!req.collection) {
+//             return res.status(500).send({ error: 'Database collection not initialized' });
+//         }
+//         const movie = await req.collection.findOne({ _id: new ObjectId(req.params.id) });
+//         if (movie) {
+//             res.json(movie);
+//         } else {
+//             res.status(404).send({ error: 'Movie not found' });
+//         }
+//     } catch (err) {
+//         res.status(500).send({ error: 'Failed to fetch movie', details: err.message });
+//     }
+// });

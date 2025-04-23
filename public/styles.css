@@ -206,3 +206,32 @@ strong {
   color: #7a1f1f;
 }
 
+.comments-section {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 1em;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+.comments-section .text {
+  color: #2a2a2a;
+}
+
+.comment {
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.comment .date {
+  font-size: 0.85em;
+  color: #666;
+  margin-left: 0.5em;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
