@@ -2,14 +2,15 @@
 import express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import router from './routes.js';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(express.static('../public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
 const url = process.env.MONGODB_URI;
 const dbName = 'sample_mflix';
@@ -44,36 +45,3 @@ async function startServer() {
 }
 
 await startServer();
-
-// CRUD endpoints
-
-// Get all movies
-// app.get('/movies/', async (req, res) => {
-//     try {
-//         if (!req.collection) {
-//             return res.status(500).send({ error: 'Database collection not initialized' });
-//         }
-//         const movies = await req.collection.find().toArray();
-//         console.log(movies);
-//         res.json(movies);
-//     } catch (err) {
-//         res.status(500).send({ error: 'Failed to fetch movies', details: err.message });
-//     }
-// });
-//
-// // Get a movie by ID
-// app.get('/movies/:id', async (req, res) => {
-//     try {
-//         if (!req.collection) {
-//             return res.status(500).send({ error: 'Database collection not initialized' });
-//         }
-//         const movie = await req.collection.findOne({ _id: new ObjectId(req.params.id) });
-//         if (movie) {
-//             res.json(movie);
-//         } else {
-//             res.status(404).send({ error: 'Movie not found' });
-//         }
-//     } catch (err) {
-//         res.status(500).send({ error: 'Failed to fetch movie', details: err.message });
-//     }
-// });
