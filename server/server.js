@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes.js';
 
+// Load .env variable
 dotenv.config();
 
 const app = express();
