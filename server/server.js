@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors());
 
 const url = process.env.MONGODB_URI;
 const dbName = 'sample_mflix';
