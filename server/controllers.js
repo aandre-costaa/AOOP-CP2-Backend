@@ -31,32 +31,22 @@ export const getAllMovies = async (req, res) => {
  // Get a movie by ID
 export const getMovieById = async (req, res) => {
     try {
-        const { movies } = req.collections;
-        const movie = await movies.findOne({ _id: new ObjectId(req.params.id) });
+        const { movies, comments } = req.collections;
+        const movieId = new ObjectId(req.params.id);
+
+        const movie = await movies.findOne({ _id: movieId });
 
         if (movie) {
-            res.json(movie);
+            const movieComments = await comments
+                .find({ movie_id: movieId })
+                .toArray();
+
+            res.json({ ...movie, comments: movieComments });
         } else {
             res.status(404).send({ error: 'Movie not found' });
         }
     } catch (err) {
         res.status(500).send({ error: 'Failed to fetch movie', details: err.message });
-    }
- };
-
-// Get movie comments
-export const getMovieComments = async (req, res) => {
-    try {
-        const { comments } = req.collections;
-        const movieComments = await comments.find({ movie_id: new ObjectId(req.params.id) }).toArray();
-
-        if (movieComments.length > 0) {
-            res.json(movieComments);
-        } else {
-            res.status(404).send({ error: 'Movie comments not found' });
-        }
-    } catch (err) {
-        res.status(500).send({ error: 'Failed to fetch movie comments', details: err.message });
     }
 };
 
